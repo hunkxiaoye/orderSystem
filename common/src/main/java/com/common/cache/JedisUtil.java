@@ -27,7 +27,7 @@ public class JedisUtil {
      * @param <T>
      * @return
      */
-    public <T> T get(String key, Class<T> type) {
+    public <T> T get(String key, Class<T> type) throws Exception{
         ShardedJedis jedis = sPool.getResource();
 
         try {
@@ -87,7 +87,7 @@ public class JedisUtil {
      * @param seconds
      * @return
      */
-    public boolean setnx(String key, Object value, int seconds) {
+    public boolean setnx(String key, Object value, int seconds) throws Exception{
         ShardedJedis jedis = sPool.getResource();
         try {
             Long result = jedis.setnx(key, JSON.toJSONString(value));
@@ -117,7 +117,7 @@ public class JedisUtil {
      * @param value
      * @param seconds
      */
-    public void hset(String key, String field, Object value, int seconds) {
+    public void hset(String key, String field, Object value, int seconds) throws Exception {
         ShardedJedis jedis = sPool.getResource();
         try {
             jedis.hset(key, field, JSON.toJSONString(value));
@@ -137,7 +137,7 @@ public class JedisUtil {
      * @param value
      * @param
      */
-    public void hset(String key, String field, Object value) {
+    public void hset(String key, String field, Object value) throws Exception{
         ShardedJedis jedis = sPool.getResource();
         try {
             jedis.hset(key, field, JSON.toJSONString(value));
@@ -159,7 +159,7 @@ public class JedisUtil {
      * @param <T>
      * @return
      */
-    public <T> T hget(Class<T> type, String key, String field) {
+    public <T> T hget(Class<T> type, String key, String field) throws Exception{
         ShardedJedis jedis = sPool.getResource();
         try {
             return JSON.parseObject(jedis.hget(key, field), type);
@@ -176,7 +176,7 @@ public class JedisUtil {
      * 删除缓存
      * @param key
      */
-    public void del(String key) {
+    public void del(String key) throws Exception{
         ShardedJedis jedis = sPool.getResource();
         try {
             jedis.del(key);
@@ -217,7 +217,7 @@ public class JedisUtil {
      * @param map
      * @param seconds
      */
-    public void hmset(String key, Map<String, String> map, int seconds) {
+    public void hmset(String key, Map<String, String> map, int seconds) throws Exception{
         if (map.size()==0)
             return;
         ShardedJedis jedis = sPool.getResource();
@@ -239,7 +239,7 @@ public class JedisUtil {
      * @param map
      * @param
      */
-    public void hmset(String key, Map<String, String> map) {
+    public void hmset(String key, Map<String, String> map) throws Exception{
         if (map.size()==0)
             return;
         ShardedJedis jedis = sPool.getResource();
@@ -260,7 +260,7 @@ public class JedisUtil {
      * @param fields
      * @return
      */
-    public List<String> hmget(String key, String... fields) {
+    public List<String> hmget(String key, String... fields) throws Exception{
         ShardedJedis jedis = sPool.getResource();
         try {
             return jedis.hmget(key, fields);
@@ -278,7 +278,7 @@ public class JedisUtil {
      * @param key hashKey 名称
      * @return
      */
-    public Set<String> hkeys(String key) {
+    public Set<String> hkeys(String key) throws Exception{
         ShardedJedis jedis = sPool.getResource();
         try {
             return jedis.hkeys(key);
@@ -297,7 +297,7 @@ public class JedisUtil {
      * @param key hashKey 名称
      * @return
      */
-    public List<String> hvals(String key) {
+    public List<String> hvals(String key) throws Exception{
         ShardedJedis jedis = sPool.getResource();
         try {
             return jedis.hvals(key);
@@ -315,7 +315,7 @@ public class JedisUtil {
      * @param key key hashKey 名称
      * @return
      */
-    public Map<String, String> hgetAll(String key) {
+    public Map<String, String> hgetAll(String key) throws Exception{
         ShardedJedis jedis = sPool.getResource();
         try {
             return jedis.hgetAll(key);
@@ -335,7 +335,7 @@ public class JedisUtil {
      * @param seconds
      * @return
      */
-    public long inc(String key, int seconds) {
+    public long inc(String key, int seconds) throws Exception{
         ShardedJedis jedis = sPool.getResource();
         try {
             boolean exist = jedis.exists(key);
@@ -359,7 +359,7 @@ public class JedisUtil {
      * @param seconds
      * @return
      */
-    public long decr(String key, int seconds) {
+    public long decr(String key, int seconds) throws Exception{
         ShardedJedis jedis = sPool.getResource();
         try {
             Long val = this.get(key, Long.class);
