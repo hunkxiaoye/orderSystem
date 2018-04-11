@@ -1,0 +1,59 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>登录</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
+    <script type="text/javascript" src="assets/js/jquery.min.js"></script>
+</head>
+
+<body class="text-center">
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-4 column">
+        </div>
+        <div class="col-md-4 column">
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                </div>
+            </div>
+            #set($url="")
+            #if($returnurl)
+            #set($url="?returnurl="+$returnurl)#end
+            <form  role="form" class="form-signin" name="loginForm" id="loginForm" action="loginVerify$url" method="post">
+                <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                <label for="user_login" class="sr-only">Email address</label>
+                <input type="text" name="username" id="user_login" class="form-control" placeholder="Email address" required autofocus>
+
+
+                <label for="user_pass" class="sr-only">Password</label>
+                <input type="password" name="password" id="user_pass" class="form-control" placeholder="Password" required>
+                <div class="checkbox mb-3">
+                    <label>
+                        <input name="auto" id="auto" type="checkbox" value="remember-me"> 记住我
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-lg btn-primary btn-block" name="wp-submit" id="submit-btn">登录</button>
+                <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+            </form>
+        </div>
+        <div class="col-md-4 column">
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+

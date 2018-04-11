@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.db.dao.backOrderDao">
+    <select id="findBybackNumber" resultType="backOrder" parameterType="String">
+        SELECT * FROM back_order WHERE back_number =#{backNumber}
+    </select>
+
+    <insert id="Add" parameterType="backOrder" >
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO Comment(id,userid,commentinfo,createtime,newsid) VALUES
+        (#{id},#{userid},#{commentinfo},#{createtime},#{newsid})
+    </insert>
+
+</mapper>

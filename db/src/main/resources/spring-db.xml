@@ -8,10 +8,10 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/tx
-       http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <!-- 扫描非controller包下所有使用注解的类型 -->
-    <context:component-scan base-package="com.db.*"/>
+    <context:component-scan base-package="com.db"/>
 
     <!-- 配置数据库相关参数properties的属性：${url} -->
     <!--读取属性文件 -->
@@ -22,7 +22,6 @@
             <list>
                 <value>classpath:redis.properties</value>
                 <value>classpath:es.properties</value>
-                <value>classpath:solr.properties</value>
                 <value>classpath:kafka.properties</value>
                 <value>classpath:jdbc.properties</value>
                 <value>classpath:log4j2.properties</value>
@@ -126,7 +125,7 @@
         <property name="dataSource" ref="dataSourceA"/>
         <property name="typeAliasesPackage" value="com.comment.model"/>
         <!-- 自动扫描mapping.xml文件 -->
-        <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+        <property name="mapperLocations" value="classpath:mapper/*"></property>
     </bean>
 
 
@@ -135,7 +134,7 @@
         <!-- 注入sqlSessionFactory -->
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         <!-- 给出需要扫描Dao接口包 -->
-        <property name="basePackage" value="com.comment.dao"/>
+        <property name="basePackage" value="com.db.dao"/>
     </bean>
 
     <!-- 配置事务管理器 -->
