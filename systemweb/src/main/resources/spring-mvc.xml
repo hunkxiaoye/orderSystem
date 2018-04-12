@@ -11,7 +11,23 @@
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
-    <import resource="classpath:spring-db.xml"/>
+    <!-- 配置数据库相关参数properties的属性：${url} -->
+    <!--读取属性文件 -->
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:jdbc.properties</value>
+                <value>classpath:log4j2.properties</value>
+                <value>classpath:redis.properties</value>
+                <value>classpath:es.properties</value>
+                <value>classpath:kafka.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--<import resource="classpath:spring-db.xml"/>-->
+    <!--<import resource="classpath:spring-common.xml"/>-->
 
     <context:annotation-config/>
     <!-- 开启SpringMVC注解模式 -->

@@ -13,19 +13,6 @@
     <!-- 扫描非controller包下所有使用注解的类型 -->
     <context:component-scan base-package="com.db"/>
 
-    <!-- 配置数据库相关参数properties的属性：${url} -->
-    <!--读取属性文件 -->
-    <bean id="propertyConfigurer"
-          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-
-            <list>
-                <value>classpath:jdbc.properties</value>
-                <value>classpath:log4j2.properties</value>
-            </list>
-        </property>
-    </bean>
-
     <!--&lt;!&ndash; kafka 开始&ndash;&gt;-->
     <!--<bean id="producerProperties" class="java.util.HashMap">-->
     <!--<constructor-arg>-->
