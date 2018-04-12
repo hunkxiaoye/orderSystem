@@ -16,7 +16,6 @@
         <module>sdk</module>
         <module>api</module>
         <module>systemweb</module>
-
     </modules>
 
     <dependencies>
@@ -154,7 +153,6 @@
     </dependencies>
 
     <build>
-        <finalName>ordersystem</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

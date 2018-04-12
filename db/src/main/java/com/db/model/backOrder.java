@@ -2,7 +2,9 @@ package com.db.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.joda.time.LocalDateTime;
+
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class backOrder {

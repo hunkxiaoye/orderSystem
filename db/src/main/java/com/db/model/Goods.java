@@ -9,12 +9,14 @@ import lombok.Setter;
 public class Goods {
     private int id;
     //商品名称
-    private String  goodsName;
+    private String  goods_name;
     //可用库存
     private int stock;
     //锁定库存
-    private int lockStock;
+    private int lock_stock;
     //价格
     private int price;
+
+
 
 }

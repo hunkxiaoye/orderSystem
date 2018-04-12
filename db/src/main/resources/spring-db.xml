@@ -20,39 +20,11 @@
         <property name="locations">
 
             <list>
-                <value>classpath:redis.properties</value>
-                <value>classpath:es.properties</value>
-                <value>classpath:kafka.properties</value>
                 <value>classpath:jdbc.properties</value>
                 <value>classpath:log4j2.properties</value>
-
             </list>
         </property>
     </bean>
-
-    <!-- Redis 开始-->
-    <bean id="JedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <property name="maxTotal" value="${redis.pool.maxTotal}"/>
-        <property name="maxIdle" value="${redis.pool.maxIdle}"/>
-        <property name="minIdle" value="${redis.pool.minIdle}"/>
-        <property name="maxWaitMillis" value="${redis.pool.maxWaitMillis}"/>
-        <property name="testOnBorrow" value="${redis.pool.testOnBorrow}"/>
-        <property name="testOnReturn" value="${redis.pool.testOnReturn}"/>
-        <property name="testWhileIdle" value="${redis.pool.testWhileIdle}"/>
-    </bean>
-    <bean id="ShardedJedisPool" class="redis.clients.jedis.ShardedJedisPool">
-        <constructor-arg index="0" ref="JedisPoolConfig"/>
-        <constructor-arg index="1">
-            <list>
-                <bean class="redis.clients.jedis.JedisShardInfo">
-                    <constructor-arg index="0" value="${redis.list-1.ip}"/>
-                    <constructor-arg index="1" value="${redis.list-1.port}" type="int"/>
-                </bean>
-            </list>
-        </constructor-arg>
-    </bean>
-
-    <!-- Redis 结束-->
 
     <!--&lt;!&ndash; kafka 开始&ndash;&gt;-->
     <!--<bean id="producerProperties" class="java.util.HashMap">-->
@@ -123,9 +95,9 @@
     <!-- 配置SqlSessionFactory对象 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSourceA"/>
-        <property name="typeAliasesPackage" value="com.comment.model"/>
+        <property name="typeAliasesPackage" value="com.db.model"/>
         <!-- 自动扫描mapping.xml文件 -->
-        <property name="mapperLocations" value="classpath:mapper/*"></property>
+        <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
     </bean>
 
 

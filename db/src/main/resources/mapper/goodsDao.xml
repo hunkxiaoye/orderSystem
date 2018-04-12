@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.db.dao.goodsDao">
+    <select id="findGoodsAll" resultType="Goods">
+        SELECT * FROM goods
+    </select>
+    <select id="findbyid" resultType="Goods" parameterType="int">
+        SELECT * FROM goods WHERE id =#{id}
+    </select>
+    <update id="update" parameterType="Goods">
+        update goods
+        <set>
+            <if test="goods_name != null">goods_name=#{goods_name},</if>
+            <if test="stock != null">stock=#{stock},</if>
+            <if test="lock_stock != null">lock_stock=lock_stock+#{lock_stock},</if>
+            <if test="price != null">price=#{price}</if>
+        </set>
+        where id=#{id} AND stock >= #{stock} FOR UPDATE
+    </update>
+</mapper>
+

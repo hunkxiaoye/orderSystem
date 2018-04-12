@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,7 +28,7 @@ public class JedisUtil {
      * @param <T>
      * @return
      */
-    public <T> T get(String key, Class<T> type) throws Exception{
+    public <T> T get(String key, Class<T> type){
         ShardedJedis jedis = sPool.getResource();
 
         try {

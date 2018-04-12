@@ -2,7 +2,9 @@ package com.db.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.joda.time.LocalDateTime;
+
+import java.time.LocalDateTime;
+
 @Setter
 @Getter
 //订单详情
