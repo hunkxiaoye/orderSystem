@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.db.dao.orderInfoDao">
+
+    <select id="findbyid" resultType="orderInfo" parameterType="String">
+        SELECT * FROM order_info WHERE id =#{order_id}
+    </select>
+
+    <select id="findByStatus" resultType="orderInfo" parameterType="int">
+        <![CDATA[ SELECT * FROM order_info WHERE pay_status =#{pay_status} AND order_expired_time < now()]]>
+    </select>
+
+    <update id="update" parameterType="orderInfo">
+        update order_info
+        <set>
+            <if test="id != null">id = #{id},</if>
+            <if test="order_type != null">order_type = #{order_type},</if>
+            <if test="pay_status != null">lock_stock = #{lock_stock},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="pay_time != null">pay_time = #{pay_time},</if>
+            <if test="order_expired_time != null">order_expired_time = #{order_expired_time},</if>
+            <if test="userid != null">userid = #{userid},</if>
+            <if test="create_time != null">create_time = create_time</if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>
+

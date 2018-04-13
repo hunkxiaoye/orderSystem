@@ -9,15 +9,13 @@
     <select id="findbyid" resultType="Goods" parameterType="int">
         SELECT * FROM goods WHERE id =#{id}
     </select>
-    <update id="update" parameterType="Goods">
+    <update id="update" parameterType="stockModel">
         update goods
         <set>
-            <if test="goods_name != null">goods_name=#{goods_name},</if>
-            <if test="stock != null">stock=#{stock},</if>
-            <if test="lock_stock != null">lock_stock=lock_stock+#{lock_stock},</if>
-            <if test="price != null">price=#{price}</if>
+            <if test="stock != null">stock = stock - #{stock},</if>
+            <if test="stock != null">lock_stock = lock_stock + #{stock}</if>
         </set>
-        where id=#{id} AND stock >= #{stock} FOR UPDATE
+        where id = #{id} AND stock <![CDATA[ >= ]]> #{stock}
     </update>
 </mapper>
 

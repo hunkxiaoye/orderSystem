@@ -16,6 +16,8 @@ public class Goods {
     private int lock_stock;
     //价格
     private int price;
+    //版本号
+    private int version;
 
 
 

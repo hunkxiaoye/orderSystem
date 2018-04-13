@@ -1,5 +1,6 @@
 package com.db.model;
 
+import com.common.Elasticsearch.meta.BaseModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,9 +8,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class orderInfo {
+public class orderInfo extends BaseModel<String> {
     //订单号
-    private String order_number;
+    //private String id;
     //订单状态
     private int order_type;
     //支付状态
