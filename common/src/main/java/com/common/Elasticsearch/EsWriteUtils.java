@@ -14,6 +14,8 @@ import com.common.util.Utils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
 import org.elasticsearch.ElasticsearchStatusException;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -21,7 +23,9 @@ import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.slf4j.Logger;
@@ -42,6 +46,8 @@ public class EsWriteUtils {
     private static final Logger log = LoggerFactory.getLogger(EsWriteUtils.class);
     @Autowired
     private esClientUtil esClientUtil;
+    @Autowired
+    private esSearchUtil searchUtil;
 
     /**
      * 单个添加
@@ -55,16 +61,18 @@ public class EsWriteUtils {
         }
         Mapper.EntityInfo info = Mapper.getEntityInfo(model.getClass());
         try {
-            //addCore(info, clusterName);
-            add(clusterName, model, info);
-        } catch (ESIndexNotFoundException e) {
-            log.debug("索引未找到，则去新建索引:{}", e);
-            addCore(info, clusterName);
-            add(clusterName, model, info);
-        } catch (ESMappingNotFoundException e) {
+            if(searchUtil.isExistsIndex(info.getIndex().getIndexName(),clusterName)) {
+                add(clusterName, model, info);
+            }else {
+                addCore(info, clusterName);
+                add(clusterName, model, info);
+            }
+        }catch (ESMappingNotFoundException e) {
             log.debug("新字段的mapping未找到，则去新建索引:{}", e);
             addFieldMapping(info, clusterName);
             add(clusterName, model, info);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -76,7 +84,9 @@ public class EsWriteUtils {
         ElasticIndex index = info.getIndex();
         IndexRequest request = new IndexRequest(index.getIndexName(), index.getIndexType(), id.toString())
                 .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)
-                .source(JSON.toJSONString(model));
+                .source(Utils.toJson(model),XContentType.JSON);
+
+        String a =Utils.toJson(model);
         exce(clusterName, client -> client.index(request));
     }
 
@@ -93,15 +103,18 @@ public class EsWriteUtils {
         }
         Mapper.EntityInfo info = Mapper.getEntityInfo(model.getClass());
         try {
-            update(clusterName, model, info);
-        } catch (ESIndexNotFoundException e) {
-            log.debug("索引未找到，则去新建索引:{}", e);
-            addCore(info, clusterName);
-            update(clusterName, model, info);
-        } catch (ESMappingNotFoundException e) {
+            if(searchUtil.isExistsIndex(info.getIndex().getIndexName(),clusterName)) {
+                update(clusterName, model, info);
+            }else {
+                addCore(info, clusterName);
+                update(clusterName, model, info);
+            }
+        }catch (ESMappingNotFoundException e) {
             log.debug("新字段的mapping未找到，则去新建索引:{}", e);
             addFieldMapping(info, clusterName);
             update(clusterName, model, info);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -151,15 +164,18 @@ public class EsWriteUtils {
         }
         Mapper.EntityInfo info = Mapper.getEntityInfo(list.get(0).getClass());
         try {
-            addList(clusterName,list,info);
-        }catch (ESIndexNotFoundException e){
-            log.debug("索引未找到，则去新建索引:{}",e);
-            addCore(info,clusterName);
-            addList(clusterName,list,info);
+            if(searchUtil.isExistsIndex(info.getIndex().getIndexName(),clusterName)) {
+                addList(clusterName,list,info);
+            }else {
+                addCore(info, clusterName);
+                addList(clusterName,list,info);
+            }
         }catch (ESMappingNotFoundException e){
             log.debug("新字段的mapping未找到，则去新建索引:{}",e);
             addFieldMapping(info,clusterName);
             addList(clusterName,list,info);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
@@ -204,15 +220,18 @@ public class EsWriteUtils {
     private  <T extends BaseModel> void retryUpdateIndexList(List<T> list,boolean fresh,String clusterName){
         Mapper.EntityInfo info = Mapper.getEntityInfo(list.get(0).getClass());
         try {
-            updateList(clusterName,list,fresh,info);
-        }catch (ESIndexNotFoundException e){
-            log.debug("索引未找到，则去新建索引:{}",e);
-            addCore(info,clusterName);
-            updateList(clusterName,list,fresh,info);
+            if(searchUtil.isExistsIndex(info.getIndex().getIndexName(),clusterName)) {
+                updateList(clusterName,list,fresh,info);
+            }else {
+                addCore(info, clusterName);
+                updateList(clusterName,list,fresh,info);
+            }
         }catch (ESMappingNotFoundException e){
             log.debug("新字段的mapping未找到，则去新建索引:{}",e);
             addFieldMapping(info,clusterName);
             updateList(clusterName,list,fresh,info);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -298,7 +317,7 @@ public class EsWriteUtils {
      */
     private void addCore(Mapper.EntityInfo info, String clusterName) {
         try {
-            RestClient client = esClientUtil.getrestClient(clusterName);
+            RestClientBuilder client = esClientUtil.getrestClient(clusterName);
             ElasticIndex index = info.getIndex();
             int shards = Integer.parseInt(esClientUtil.getshards());
             int replicas = Integer.parseInt(esClientUtil.getreplicas());
@@ -310,8 +329,8 @@ public class EsWriteUtils {
             log.debug("index : {} , shards :{} ,replicas :{} ", index.getIndexName(), shards, replicas);
             try (NStringEntity entity = new NStringEntity(Utils.toJson(settings), ContentType.APPLICATION_JSON);
                  NStringEntity mapping = new NStringEntity(Utils.toJson(info.getMappings()), ContentType.APPLICATION_JSON)) {
-                client.performRequest("PUT", index.getIndexName(), Collections.emptyMap(), entity);
-                client.performRequest("POST", index.getIndexName() + "/" + index.getIndexType() + "/_mapping", Collections.emptyMap(), mapping);
+                client.build().performRequest("PUT", index.getIndexName(), Collections.emptyMap(), entity);
+                client.build().performRequest("POST", index.getIndexName() + "/" + index.getIndexType() + "/_mapping", Collections.emptyMap(), mapping);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -327,16 +346,17 @@ public class EsWriteUtils {
     private void addFieldMapping(Mapper.EntityInfo info, String clusterName) {
         try {
 
-            RestClient client = esClientUtil.getrestClient(clusterName);
+            RestClientBuilder client = esClientUtil.getrestClient(clusterName);
             ElasticIndex index = info.getIndex();
             try (NStringEntity mapping = new NStringEntity(JSON.toJSONString(info.getMappings()), ContentType.APPLICATION_JSON)) {
-                client.performRequest("POST", index.getIndexName() + "/" + index.getIndexType() + "/_mapping", Collections.emptyMap(), mapping);
+                client.build().performRequest("POST", index.getIndexName() + "/" + index.getIndexType() + "/_mapping", Collections.emptyMap(), mapping);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } catch (UnknownHostException e) {
         }
     }
+
 
     /**
      * 处理异常

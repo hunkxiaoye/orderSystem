@@ -1,5 +1,6 @@
 package com.db.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.common.Elasticsearch.meta.BaseModel;
 import lombok.Getter;
 import lombok.Setter;

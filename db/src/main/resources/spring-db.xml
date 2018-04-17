@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/cache"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
@@ -13,38 +13,6 @@
     <!-- 扫描非controller包下所有使用注解的类型 -->
     <context:component-scan base-package="com.db"/>
 
-    <!--&lt;!&ndash; kafka 开始&ndash;&gt;-->
-    <!--<bean id="producerProperties" class="java.util.HashMap">-->
-    <!--<constructor-arg>-->
-    <!--<map>-->
-    <!--<entry key="bootstrap.servers" value="${bootstrap.servers}" />-->
-    <!--<entry key="retries" value="${retries}" />-->
-    <!--<entry key="batch.size" value="${batch.size}" />-->
-    <!--<entry key="linger.ms" value="${linger.ms}" />-->
-    <!--<entry key="buffer.memory" value="${buffer.memory}" />-->
-    <!--<entry key="acks" value="${acks}" />-->
-    <!--<entry key="key.serializer" value="org.apache.kafka.common.serialization.StringSerializer" />-->
-    <!--<entry key="value.serializer" value="org.apache.kafka.common.serialization.StringSerializer" />-->
-    <!--</map>-->
-    <!--</constructor-arg>-->
-    <!--</bean>-->
-
-    <!--&lt;!&ndash; 定义consumer的参数 &ndash;&gt;-->
-    <!--<bean id="consumerProperties" class="java.util.HashMap">-->
-    <!--<constructor-arg>-->
-    <!--<map>-->
-    <!--<entry key="bootstrap.servers" value="${bootstrap.servers}" />-->
-    <!--<entry key="group.id" value="${group.id}" />-->
-    <!--<entry key="enable.auto.commit" value="${enable.auto.commit}" />-->
-    <!--<entry key="session.timeout.ms" value="${session.timeout.ms}" />-->
-    <!--<entry key="key.deserializer"-->
-    <!--value="org.apache.kafka.common.serialization.StringDeserializer" />-->
-    <!--<entry key="value.deserializer"-->
-    <!--value="org.apache.kafka.common.serialization.StringDeserializer" />-->
-    <!--</map>-->
-    <!--</constructor-arg>-->
-    <!--</bean>-->
-    <!--&lt;!&ndash; kafka 结束&ndash;&gt;-->
 
     <!-- 数据库连接池 -->
     <bean id="dataSourceA" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
@@ -58,26 +26,7 @@
         <property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"/>
         <property name="acquireRetryAttempts" value="${c3p0.acquireRetryAttempts}"/>
     </bean>
-    <!--<bean id="dataSourceB" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">-->
-    <!--<property name="driverClass" value="${B.jdbc.driver}"/>-->
-    <!--<property name="jdbcUrl" value="${B.jdbc.url}"/>-->
-    <!--<property name="user" value="${B.jdbc.username}"/>-->
-    <!--<property name="password" value="${B.jdbc.password}"/>-->
-    <!--<property name="maxPoolSize" value="${c3p0.maxPoolSize}"/>-->
-    <!--<property name="minPoolSize" value="${c3p0.minPoolSize}"/>-->
-    <!--<property name="autoCommitOnClose" value="${c3p0.autoCommitOnClose}"/>-->
-    <!--<property name="checkoutTimeout" value="${c3p0.checkoutTimeout}"/>-->
-    <!--<property name="acquireRetryAttempts" value="${c3p0.acquireRetryAttempts}"/>-->
-    <!--</bean>-->
-    <!--<bean id="DataSource" class="com.userDemo.common.database.ChooseDataSource">-->
-    <!--<property name="defaultTargetDataSource" ref="dataSourceA"/>-->
-    <!--<property name="targetDataSources">-->
-    <!--<map key-type="java.lang.String">-->
-    <!--<entry key="write" value-ref="dataSourceA"/>-->
-    <!--<entry key="read" value-ref="dataSourceB"/>-->
-    <!--</map>-->
-    <!--</property>-->
-    <!--</bean>-->
+
 
     <!-- 配置SqlSessionFactory对象 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -104,19 +53,6 @@
     <!-- 配置基于注解的声明式事务 -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <!--&lt;!&ndash; aop自动代理配置，配置后直接使用注解 &ndash;&gt;-->
-    <!--<aop:aspectj-autoproxy/>-->
-
-    <!--<bean id="dataSourceAspect" class="com.userDemo.common.database.DataSourceAspect"/>-->
-    <!--<aop:config>-->
-    <!--<aop:aspect id="c" ref="dataSourceAspect">-->
-    <!--<aop:pointcut id="tx"-->
-    <!--expression="execution(* com.userDemo.service..*.*(..))"/>-->
-    <!--<aop:before pointcut-ref="tx" method="before"/>-->
-    <!--<aop:after pointcut-ref="tx" method="after"/>-->
-    <!--</aop:aspect>-->
-    <!--</aop:config>-->
-    <!--&lt;!&ndash; 配置数据库注解aop &ndash;&gt;-->
 
 
 </beans>

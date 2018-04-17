@@ -13,7 +13,6 @@
         <module>handler</module>
         <module>task</module>
         <module>db</module>
-        <module>sdk</module>
         <module>api</module>
         <module>systemweb</module>
     </modules>

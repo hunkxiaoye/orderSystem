@@ -6,16 +6,22 @@ import com.common.exception.ExceptionConvert;
 import com.common.func.RFunc;
 import com.common.util.*;
 import org.apache.lucene.search.join.ScoreMode;
+import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.ElasticsearchStatusException;
 import org.elasticsearch.action.ActionResponse;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
+import org.elasticsearch.action.admin.indices.open.OpenIndexRequest;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.*;
+import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.NestedQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.Scroll;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
@@ -40,6 +46,50 @@ public class esSearchUtil {
     private  final Logger log = LoggerFactory.getLogger(esSearchUtil.class);
     @Autowired
     private esClientUtil esClientUtil;
+
+
+    /**
+     *  判断索引是否存在
+     * @param indexName
+     * @return
+     */
+    public  boolean  isExistsIndex(String indexName,String clusterName)throws IOException {
+
+        boolean result =true;
+        try {
+
+            OpenIndexRequest openIndexRequest = new OpenIndexRequest(indexName);
+            esClientUtil.getClient(clusterName).indices().open(openIndexRequest).isAcknowledged();
+
+        } catch (ElasticsearchStatusException ex) {
+            String m = "Elasticsearch exception [type=index_not_found_exception, reason=no such index]";
+            if (m.equals(ex.getMessage())) {
+                result = false;
+            }
+        }
+        if(result)
+            System.out.println("索引:" +indexName + " 是存在的");
+        else
+            System.out.println("索引:" +indexName + " 不存在");
+
+        return result;
+//        GetResponse response = null;
+//        try {
+//            GetRequest isr = new GetRequest(indexName);
+//            response =  esClientUtil.getClient(clusterName).get(isr);
+//        } catch (ElasticsearchException e) {
+//           if(e.status()== RestStatus.NOT_FOUND){
+//               return false;
+//           }
+//        } catch (IOException e) {
+//            log.error("错误："+e);
+//        }
+//        return true;
+    }
+
+
+
+
     /**
      * 查询
      * @param clazz

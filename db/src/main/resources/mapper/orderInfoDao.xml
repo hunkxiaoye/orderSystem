@@ -12,6 +12,13 @@
         <![CDATA[ SELECT * FROM order_info WHERE pay_status =#{pay_status} AND order_expired_time < now()]]>
     </select>
 
+    <insert id="add" parameterType="orderInfo" >
+        <!--<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">-->
+            <!--SELECT LAST_INSERT_ID()-->
+        <!--</selectKey>-->
+        INSERT INTO order_info(id,order_type,pay_status,amount,create_time,order_expired_time,userid) VALUES
+        (#{id},#{order_type},#{pay_status},#{amount},#{create_time},#{order_expired_time},#{userid})
+    </insert>
     <update id="update" parameterType="orderInfo">
         update order_info
         <set>
@@ -26,5 +33,6 @@
         </set>
         where id = #{id}
     </update>
+
 </mapper>
 

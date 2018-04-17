@@ -1,7 +1,9 @@
 package com.common.Elasticsearch;
 
 import org.apache.http.HttpHost;
+
 import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,7 +18,7 @@ import java.util.Map;
 public class esClientUtil {
 
     private static volatile Map<String, RestHighLevelClient> rhClient = new HashMap<>();
-    private static volatile Map<String, RestClient> restClients = new HashMap<>();
+    private static volatile Map<String, RestClientBuilder> restClients = new HashMap<>();
     private static final Object _lock = new Object();
 
     @Value("${eshost}")
@@ -50,7 +52,7 @@ public class esClientUtil {
 
     }
 
-    public RestClient getrestClient(String clusterName) throws UnknownHostException {
+    public RestClientBuilder getrestClient(String clusterName) throws UnknownHostException {
         if (!restClients.containsKey(clusterName)) {
             synchronized (_lock) {
                 if (!restClients.containsKey(clusterName)) {
@@ -59,7 +61,7 @@ public class esClientUtil {
                     for (int i = 0; i < hosts.length; i++) {
                         String[] add = hosts[i].split(":");
                         httpHosts[i] = new HttpHost(InetAddress.getByName(add[0]), Integer.parseInt(add[1]), "http");
-                        RestClient restClient = RestClient.builder(httpHosts).setMaxRetryTimeoutMillis(5 * 60 * 1000).build();
+                        RestClientBuilder restClient = RestClient.builder(httpHosts).setMaxRetryTimeoutMillis(5 * 60 * 1000);
                         restClients.put(clusterName, restClient);
                     }
                 }
