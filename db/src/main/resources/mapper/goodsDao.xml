@@ -17,5 +17,14 @@
         </set>
         where id = #{id} AND stock <![CDATA[ >= ]]> #{stock}
     </update>
+
+    <update id="returnUpdate" parameterType="stockModel">
+        update goods
+        <set>
+            <if test="stock != null">stock = stock + #{stock},</if>
+            <if test="stock != null">lock_stock = lock_stock - #{stock}</if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
 

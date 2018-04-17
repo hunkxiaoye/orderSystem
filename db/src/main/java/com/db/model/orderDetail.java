@@ -1,5 +1,6 @@
 package com.db.model;
 
+import com.common.Elasticsearch.meta.BaseModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,19 +9,19 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 //订单详情
-public class orderDetail {
-    private int id;
+public class orderDetail extends BaseModel<Integer> {
+   // private int id;
     //订单号
-    private int orderId;
+    private String order_id;
     //商品id
-    private int goodsId;
+    private int goods_id;
     //数量
     private int amount;
     //是否回库
-    private int isOperating;
+    private int is_operating;
     //创建时间
-    private LocalDateTime createTime;
+    private LocalDateTime create_time;
     //修改时间
-    private LocalDateTime updateTime;
+    private LocalDateTime update_time;
 
 }

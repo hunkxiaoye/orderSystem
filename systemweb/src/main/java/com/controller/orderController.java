@@ -50,8 +50,20 @@ public class orderController {
                 orderInfo.setOrder_expired_time(LocalDateTime.now().plusMinutes(15));
                 orderInfo.setOrder_type(0);
                 orderInfo.setPay_status(0);
+                orderInfo.setUpdate_time(LocalDateTime.now());
                 orderInfo.setUserid(Integer.parseInt(CookieUtils.getLoginInfo(request)[1]));
                 producers.send("order_create", orderInfo);
+
+                //创建订单详情对象
+                orderDetail orderDetail =new orderDetail();
+                orderDetail.setOrder_id(orderid);
+                orderDetail.setAmount(1);
+                orderDetail.setCreate_time(LocalDateTime.now());
+                orderDetail.setGoods_id(goods.getId());
+                orderDetail.setIs_operating(0);
+                orderDetail.setUpdate_time(LocalDateTime.now());
+                producers.send("order_detail_create",orderDetail);
+
                 model.addAttribute("isStock", 1);
                 model.addAttribute("goods", goods);
                 model.addAttribute("order_id", orderid);

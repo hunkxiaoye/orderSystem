@@ -16,20 +16,21 @@
         <!--<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">-->
             <!--SELECT LAST_INSERT_ID()-->
         <!--</selectKey>-->
-        INSERT INTO order_info(id,order_type,pay_status,amount,create_time,order_expired_time,userid) VALUES
-        (#{id},#{order_type},#{pay_status},#{amount},#{create_time},#{order_expired_time},#{userid})
+        INSERT INTO order_info(id,order_type,pay_status,amount,create_time,order_expired_time,update_time,userid) VALUES
+        (#{id},#{order_type},#{pay_status},#{amount},#{create_time},#{order_expired_time},#{update_time},#{userid})
     </insert>
     <update id="update" parameterType="orderInfo">
         update order_info
         <set>
             <if test="id != null">id = #{id},</if>
             <if test="order_type != null">order_type = #{order_type},</if>
-            <if test="pay_status != null">lock_stock = #{lock_stock},</if>
+            <if test="pay_status != null">pay_status = #{pay_status},</if>
             <if test="amount != null">amount = #{amount},</if>
             <if test="pay_time != null">pay_time = #{pay_time},</if>
             <if test="order_expired_time != null">order_expired_time = #{order_expired_time},</if>
             <if test="userid != null">userid = #{userid},</if>
-            <if test="create_time != null">create_time = create_time</if>
+            <if test="create_time != null">create_time = create_time,</if>
+            <if test="update_time != null">update_time = update_time</if>
         </set>
         where id = #{id}
     </update>

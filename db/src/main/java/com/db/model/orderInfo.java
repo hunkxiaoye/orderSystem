@@ -24,6 +24,8 @@ public class orderInfo extends BaseModel<String> {
     private LocalDateTime pay_time;
     //订单过期时间
     private LocalDateTime order_expired_time;
+    //修改时间
+    private LocalDateTime update_time;
     //用户id
     private int userid;
 

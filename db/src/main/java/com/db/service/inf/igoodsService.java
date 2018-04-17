@@ -9,4 +9,5 @@ public interface igoodsService {
     List<Goods> findGoodsAll();
     Goods findbyid(Integer goodsid);
     int update(stockModel goods);
+    int returnUpdate(stockModel goods);
 }

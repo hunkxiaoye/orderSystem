@@ -12,12 +12,15 @@ public class HandlerJob implements InitializingBean, ServletContextAware {
 
     @Autowired
     private orderConsumer consumer;
+    @Autowired
+    private orderDetaiConsumer detaiConsumer;
     public void Start() {
 
         try {
             System.out.println("订单创建开始");
-            //执行从队列获取评论插入数据库并创建索引
             consumer.start();
+            detaiConsumer.start();
+
 
         } catch (Exception e) {
             e.printStackTrace();
