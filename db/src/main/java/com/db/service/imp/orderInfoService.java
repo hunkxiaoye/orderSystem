@@ -25,4 +25,12 @@ public class orderInfoService implements iorderInfoService {
     public List<orderInfo> findByStatus(int status) {
         return dao.findByStatus(status);
     }
+
+    public List<orderInfo> findByuserid(int userid) {
+        return dao.findByuserid(userid);
+    }
+
+    public orderInfo findByorderid(String orderid) {
+        return dao.findByorderid(orderid);
+    }
 }

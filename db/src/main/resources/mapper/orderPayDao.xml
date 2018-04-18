@@ -3,6 +3,34 @@
 
 <!-- 设置为IUserDao接口方法提供sql语句配置 -->
 <mapper namespace="com.db.dao.orderPayDao">
+    <insert id="add" parameterType="orderPay" >
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO order_pay(id,order_number,userid,pay_serial_number,pay_state,pay_msg,pay_amount,pay_str,create_time,update_time) VALUES
+        (#{id},#{orderNumber},#{userId},#{paySerialNumber},#{payState},#{payMsg},#{payAmount},#{payStr},#{createTime},#{updateTime})
+    </insert>
 
+    <update id="update" parameterType="orderPay">
+        update order_pay
+        <set>
+            <if test="id != null">id = #{id},</if>
+            <if test="order_number != null">order_id = #{order_id},</if>
+            <if test="order_pay_number != null">goods_id = #{goods_id},</if>
+            <if test="userid != null">amount = #{amount},</if>
+            <if test="pay_serial_number != null">is_operating = #{is_operating},</if>
+            <if test="pay_state != null">create_time = #{create_time},</if>
+            <if test="pay_msg != null">update_time = #{update_time},</if>
+            <if test="pay_amount != null">update_time = #{update_time},</if>
+            <if test="pay_str != null">update_time = #{update_time},</if>
+            <if test="create_time != null">update_time = #{update_time},</if>
+            <if test="pay_suc_time != null">update_time = #{update_time},</if>
+            <if test="update_time != null">update_time = #{update_time}</if>
 
+        </set>
+        where id = #{id}
+    </update>
+    <select id="findbyorderid" resultType="orderPay" parameterType="String">
+        SELECT * FROM order_pay WHERE order_number =#{order_number}
+    </select>
 </mapper>

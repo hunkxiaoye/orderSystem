@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            订单号
+        </th>
+        <th>
+            订单金额
+        </th>
+        <th>
+            订单状态
+        </th>
+        <th>
+            操作
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    #foreach($item in $list)
+    <tr>
+        <td>
+            $item.id
+        </td>
+        <td>
+            $item.amount
+        </td>
+        #if($item.order_type==3)
+        <td>
+           退款中
+        </td>
+        #elseif($item.order_type==4)
+        <td>
+            订单取消成功
+        </td>
+        #elseif($item.order_type==6)
+        <td>
+            订单过期
+        </td>
+        #end
+
+        #if($item.pay_status==0||$item.pay_status==3)
+        <td>
+            <a href="/orderweb/payJump?orderid=$item.id">去付款</a>
+        </td>
+        #elseif($item.pay_status==2)
+        <td>
+            <a href="#">取消订单</a>
+        </td>
+    </tr>
+    #end
+    </tbody>
+</table>
+</body>
+</html>

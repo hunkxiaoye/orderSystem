@@ -1,0 +1,17 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>确认支付</title>
+</head>
+<body>
+<span>订单号：$orderid</span>
+<br/>
+<span>订单金额：$amount</span>
+<br/>
+<form action="/orderweb/payJump" method="post">
+    <input type="hidden" name="orderid" value="$orderid">
+    <button type="submit">支付</button>
+</form>
+</body>
+</html>

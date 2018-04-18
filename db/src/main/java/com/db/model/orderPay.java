@@ -1,5 +1,6 @@
 package com.db.model;
 
+import com.common.Elasticsearch.meta.BaseModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,28 +10,28 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 //支付明细
-public class orderPay {
-    private int id;
+public class orderPay extends BaseModel<Integer>{
+   // private int id;
     //主单号
-    private String orderNumber;
+    private String order_number;
     //支付单号
-    private String orderPayNumber;
+    private String order_pay_number;
     //用户id
-    private int userId;
+    private int userid;
     //支付流水号
-    private String paySerialNumber;
+    private String pay_serial_number;
     //支付状态
-    private int payState;
+    private int pay_state;
     //支付信息
-    private String payMsg;
+    private String pay_msg;
     //支付金额
-    private int payAmount;
+    private int pay_amount;
     //支付字串
-    private String payStr;
+    private String pay_str;
     //创建时间
-    private LocalDateTime createTime;
+    private LocalDateTime create_time;
     //支付成功时间
-    private LocalDateTime paySucTime;
+    private LocalDateTime pay_suc_time;
     //修改时间
-    private LocalDateTime updateTime;
+    private LocalDateTime update_time;
 }

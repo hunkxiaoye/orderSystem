@@ -4,12 +4,16 @@
 <!-- 设置为IUserDao接口方法提供sql语句配置 -->
 <mapper namespace="com.db.dao.orderInfoDao">
 
-    <select id="findbyid" resultType="orderInfo" parameterType="String">
+    <select id="findByorderid" resultType="orderInfo" parameterType="String">
         SELECT * FROM order_info WHERE id =#{order_id}
     </select>
 
     <select id="findByStatus" resultType="orderInfo" parameterType="int">
         <![CDATA[ SELECT * FROM order_info WHERE pay_status =#{pay_status} AND order_expired_time < now()]]>
+    </select>
+
+    <select id="findByuserid" resultType="orderInfo" parameterType="int">
+        SELECT * FROM order_info WHERE userid =#{userid}
     </select>
 
     <insert id="add" parameterType="orderInfo" >
