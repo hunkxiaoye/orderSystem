@@ -5,11 +5,6 @@
     <title>Title</title>
 </head>
 <body>
-#if($isPaySuccess==0)
-<span>订单支付成功</span>
-#else
-<span>订单支付失败</span>
-<a href="#">返回订单列表</a>
-#end
+<a href="$response_uri">支付成功</a><a href="#">支付遇到问题？</a>
 </body>
 </html>

@@ -13,6 +13,6 @@ public class payStr {
     private int pay_amount;
     private int user_id;
     private String app_id;
-    private String token;
+   // private String token;
     private LocalDateTime createtime;
 }
