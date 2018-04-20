@@ -43,4 +43,8 @@ public class goodsService implements igoodsService {
     public int returnUpdate(stockModel goods){
         return dao.returnUpdate(goods);
     }
+
+   public int paySuccessUpdate(stockModel goods){
+        return dao.paySuccessUpdate(goods);
+    }
 }

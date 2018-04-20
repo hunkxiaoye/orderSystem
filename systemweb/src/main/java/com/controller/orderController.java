@@ -8,10 +8,7 @@ import com.common.util.FastJsonUtil;
 import com.common.util.MD5;
 import com.common.util.Utils;
 import com.db.model.*;
-import com.db.service.inf.igoodsService;
-import com.db.service.inf.iorderInfoService;
-import com.db.service.inf.iorderPayService;
-import com.db.service.inf.irestfulService;
+import com.db.service.inf.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -34,6 +31,8 @@ public class orderController {
     private iorderPayService orderpayservice;
     @Autowired
     private iorderInfoService orderinfoservice;
+    @Autowired
+    private iorderDetailService detailService;
     @Autowired
     private KafkaProducers producers;
     @Autowired
@@ -211,6 +210,19 @@ public class orderController {
                 response.setIsok(0);
             } else {
                 response.setIsok(1);
+            }
+
+            //判断订单库存是否已扣除 没有则扣除
+            orderDetail detail = detailService.findbyid(rest.getOrderid()).get(0);
+            if (detail.getIs_operating() == 0) {
+                stockModel stockModel = new stockModel();
+                //此demo每次只有一个商品
+                stockModel.setStock(1);
+                stockModel.setId(detail.getGoods_id());
+                //扣除锁定库存
+                service.paySuccessUpdate(stockModel);
+            } else {
+
             }
         }
 

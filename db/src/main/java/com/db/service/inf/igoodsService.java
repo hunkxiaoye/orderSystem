@@ -10,4 +10,5 @@ public interface igoodsService {
     Goods findbyid(Integer goodsid);
     int update(stockModel goods);
     int returnUpdate(stockModel goods);
+    int paySuccessUpdate(stockModel goods);
 }
