@@ -28,7 +28,7 @@ public class restfulService implements irestfulService {
             HttpPost request2 = new HttpPost(uri);
             List<NameValuePair> nvps = new ArrayList<>();
             nvps.add(new BasicNameValuePair("msg", msg));
-            nvps.add(new BasicNameValuePair("token", msg));
+            nvps.add(new BasicNameValuePair("token", token));
             UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(nvps, "GBK");
             request2.setEntity(formEntity);
             HttpResponse response2 = client.execute(request2);

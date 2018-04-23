@@ -8,7 +8,7 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         INSERT INTO order_pay(id,order_number,userid,pay_serial_number,pay_state,pay_msg,pay_amount,pay_str,create_time,update_time) VALUES
-        (#{id},#{orderNumber},#{userId},#{paySerialNumber},#{payState},#{payMsg},#{payAmount},#{payStr},#{createTime},#{updateTime})
+        (#{id},#{order_number},#{userid},#{pay_serial_number},#{pay_state},#{pay_msg},#{pay_amount},#{pay_str},#{create_time},#{update_time})
     </insert>
 
     <update id="update" parameterType="orderPay">
@@ -31,6 +31,6 @@
         where id = #{id}
     </update>
     <select id="findbyorderid" resultType="orderPay" parameterType="String">
-        SELECT * FROM order_pay WHERE order_number =#{order_number}
+        SELECT * FROM order_pay WHERE order_number =#{id}
     </select>
 </mapper>

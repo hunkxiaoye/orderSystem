@@ -14,4 +14,10 @@ public class backOrderService implements ibackOrderService {
    public int add(backOrder model) {
        return dao.add(model);
    }
+   public backOrder findByBackNumber(String id){
+       return dao.findByBackNumber(id);
+   }
+   public int update(backOrder model){
+       return dao.update(model);
+   }
 }

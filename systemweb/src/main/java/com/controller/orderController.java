@@ -134,7 +134,7 @@ public class orderController {
         order.setPay_str(FastJsonUtil.bean2Json(str));
         producers.send("order_pay_create", order);
 
-        model.addAttribute("orderid", order);
+        model.addAttribute("orderid", order.getOrder_number());
         model.addAttribute("amount", amount);
         return "confirmPayment";
     }
@@ -143,11 +143,11 @@ public class orderController {
      * 支付
      *
      * @param orderid
-     * @param model
+     * @param
      * @return
      */
     @RequestMapping(value = "/payJump")
-    public String payJump(String orderid, Model model) throws NoSuchAlgorithmException {
+    public String payJump(String orderid) throws NoSuchAlgorithmException {
 
 
         String app_id = constantCode.getApp_id();
@@ -212,18 +212,13 @@ public class orderController {
                 response.setIsok(1);
             }
 
-            //判断订单库存是否已扣除 没有则扣除
             orderDetail detail = detailService.findbyid(rest.getOrderid()).get(0);
-            if (detail.getIs_operating() == 0) {
                 stockModel stockModel = new stockModel();
                 //此demo每次只有一个商品
                 stockModel.setStock(1);
                 stockModel.setId(detail.getGoods_id());
                 //扣除锁定库存
                 service.paySuccessUpdate(stockModel);
-            } else {
-
-            }
         }
 
         //创建响应参数
