@@ -65,6 +65,7 @@ public class BackorderController {
             back.setOrder_pay_number(pay.getOrder_pay_number());
             back.setAmount(info.getAmount());
             back.setBackstatus(1);
+            back.setBack_status(1);
             back.setUser_id(Integer.parseInt(CookieUtils.getLoginInfo(request)[1]));
             producers.send("back_order", back);
             isok = 1;

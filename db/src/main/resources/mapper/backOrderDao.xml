@@ -6,14 +6,36 @@
         SELECT * FROM back_order WHERE back_number =#{back_number}
     </select>
 
+    <select id="findByStatus" resultType="backOrder" parameterType="int">
+        SELECT * FROM back_order WHERE backstatus =#{backstatus} AND back_status =3;
+    </select>
+
     <insert id="add" parameterType="backOrder" >
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        INSERT INTO back_order(id,order_number,back_number,version,backstatus,createtime,updatetime,order_pay_number,amount,back_pay_status,refund_suc_time,user_id)
+        INSERT INTO back_order(id,order_number,back_number,version,backstatus,createtime,updatetime,order_pay_number,amount,back_status,refund_suc_time,user_id)
         VALUES
-        (#{id},#{order_number},#{back_number},#{version},#{backstatus},#{createtime},#{updatetime},#{order_pay_number},#{amount},#{back_pay_status},#{refund_suc_time},#{user_id})
+        (#{id},#{order_number},#{back_number},#{version},#{backstatus},#{createtime},#{updatetime},#{order_pay_number},#{amount},#{back_status},#{refund_suc_time},#{user_id})
     </insert>
 
+    <update id="update" parameterType="backOrder">
+        update back_order
+        <set>
+            <if test="id != null">id = #{id},</if>
+            <if test="order_number != null">order_number = #{order_number},</if>
+            <if test="back_number != null">back_number = #{back_number},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="backstatus != null">backstatus = #{backstatus},</if>
+            <if test="createtime != null">createtime = #{createtime},</if>
+            <if test="updatetime != null">updatetime = #{updatetime},</if>
+            <if test="order_pay_number != null">order_pay_number = #{order_pay_number},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="back_status != null">back_status = #{back_status},</if>
+            <if test="refund_suc_time != null">refund_suc_time = #{refund_suc_time},</if>
+            <if test="user_id != null">user_id = #{user_id}</if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
 

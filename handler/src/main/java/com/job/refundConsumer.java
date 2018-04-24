@@ -28,7 +28,7 @@ public class refundConsumer extends AbstractConsumer<refundModel> {
     backOrderService backservice;
 
     protected boolean process(refundModel msg) {
-        restfulModel rest;
+        restfulModel rest =new restfulModel();
         backOrder back;
         msg.setCreate_time(LocalDateTime.now());
         try {
@@ -37,19 +37,24 @@ public class refundConsumer extends AbstractConsumer<refundModel> {
             String uri = "";
 
             rest = service.initiatePay(msgs, token, uri);
+             //rest.setStatus_code(200);
+             //rest.setBack_number(msg.getBack_number());
 
-            back = backservice.findByBackNumber(rest.getBack_number());
+                back = backservice.findBybackNumber(rest.getBack_number());
+
             if (rest.getStatus_code() == 200 || rest.getStatus_code() == 300) {
                 back.setBackstatus(3);
+                back.setBack_status(2);
                 backservice.update(back);
             } else {
                 back.setBackstatus(2);
+                back.setBack_status(3);
                 backservice.update(back);
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return true;
+        return false;
     }
 }
 

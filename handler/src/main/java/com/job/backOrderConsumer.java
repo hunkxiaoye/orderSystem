@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 @KafkaConf(topic = "back_order", groupid = "test_yp", threads = 1)
@@ -45,17 +46,17 @@ public class backOrderConsumer extends AbstractConsumer<backOrder> {
             int isok = orderinfoservice.update(info);
 
             //恢复库存
-            orderDetail detail = detailService.findbyid(info.getId()).get(0);
-            if (detail.getIs_operating() == 0) {
+            List<orderDetail> detail = detailService.findbyid(info.getId());
+            if (detail.get(0).getIs_operating() == 0) {
                 stockModel stockModel = new stockModel();
                 //此demo每次只有一个商品
                 stockModel.setStock(1);
-                stockModel.setId(detail.getGoods_id());
+                stockModel.setId(detail.get(0).getGoods_id());
                 //恢复库存
                 goodservice.returnUpdate(stockModel);
 
-                detail.setIs_operating(1);
-                detailService.update(detail);
+                detail.get(0).setIs_operating(1);
+                detailService.update(detail.get(0));
 
                 //退款入参
                 refundModel model = new refundModel();

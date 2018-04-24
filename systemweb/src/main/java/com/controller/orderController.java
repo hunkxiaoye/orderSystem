@@ -204,6 +204,7 @@ public class orderController {
             pay.setPay_state(2);
             pay.setPay_suc_time(rest.getPay_time());
             pay.setUpdate_time(LocalDateTime.now());
+            pay.setOrder_pay_number(rest.getOrder_pay_number());
             int a = orderinfoservice.update(info);
             int b = orderpayservice.update(pay);
             if (a == 1 && b == 1) {

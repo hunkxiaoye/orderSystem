@@ -43,16 +43,16 @@
         <td>
             订单过期
         </td>
-        #end
-
-        #if($item.pay_status==0||$item.pay_status==3)
+#end
+        #if(($item.pay_status==0||$item.pay_status==3)&&$item.order_type!=6)
         <td>
             <a href="/orderweb/payJump?orderid=$item.id">去付款</a>
         </td>
-        #elseif($item.pay_status==2)
+        #elseif($item.pay_status==2&&$item.order_type==0)
         <td>
             <a href="/orderweb/cancelorder/?orderid=$item.id">取消订单</a>
         </td>
+        #end
     </tr>
     #end
     </tbody>

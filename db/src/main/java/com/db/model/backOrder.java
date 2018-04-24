@@ -26,7 +26,7 @@ public class backOrder extends BaseModel<Integer>{
     //退款金额
     private int amount;
     //退款状态
-    private int back_pay_status;
+    private int back_status;
     //退款成功时间
     private LocalDateTime refund_suc_time;
     //用户id
