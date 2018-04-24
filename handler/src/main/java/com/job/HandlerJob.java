@@ -31,6 +31,7 @@ public class HandlerJob implements InitializingBean, ServletContextAware {
             backConsumer.start();
             System.out.println("支付创建开始");
             payConsumer.start();
+            System.out.println(" 退款创建开始");
             refundconsumer.start();
         } catch (Exception e) {
             e.printStackTrace();
