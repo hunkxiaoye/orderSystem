@@ -47,7 +47,7 @@ public class refundConsumer extends AbstractConsumer<refundModel> {
              rest.setBack_number(msg.getBack_number());
 
                 back = backservice.findBybackNumber(rest.getBack_number());
-                orderInfo info = infoService.findByorderid(rest.getOrderid());
+                orderInfo info = infoService.findByorderid(back.getOrder_number());
 
             if (rest.getStatus_code() == 200 || rest.getStatus_code() == 300) {
                 back.setBackstatus(3);
